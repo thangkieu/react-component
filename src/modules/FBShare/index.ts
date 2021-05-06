@@ -1,1 +1,0 @@
-export { FBShare } from './FBShare';
