@@ -1,24 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useCallback, useState } from 'react';
+import { CameraAccess } from './modules/CameraAccess';
+import { CircleProgress } from './modules/CircleProgress';
+import { FBShare } from './modules/FBShare';
+import { Header } from './modules/Header';
+import { MobileCameraAccess } from './modules/MobileCameraAccess';
+import { RenderImageFromFile } from './modules/RenderImageFromFile';
 
 function App() {
+  const [loadedFile, setLoadedFile] = useState<File>();
+
+  const handleCapture = useCallback((file: File) => {
+    setLoadedFile(file);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+
+      <CircleProgress width={400} percentage={75} stroke={20} />
+
+      <MobileCameraAccess onCaptured={handleCapture} />
+
+      <RenderImageFromFile file={loadedFile} />
+
+      <CameraAccess width={500} height={300} />
+
+      <FBShare
+        fbAppId="559268918372459"
+        photos={[
+          'https://live.staticflickr.com/65535/51124674032_a2d954fdce_k.jpg',
+        ]}
+      />
     </div>
   );
 }
